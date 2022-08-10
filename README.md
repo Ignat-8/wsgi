@@ -2,7 +2,7 @@
 
 gunicorn - wsgi-коннектор
 pip install gunicorn
-gunicorn simple_wsgi:application
+gunicorn run_wsgi:application
 
 uwsgi
 pip install uwsgi
