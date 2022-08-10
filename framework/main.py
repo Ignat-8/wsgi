@@ -1,9 +1,8 @@
 import quopri
-from views import NotFound404
+from pprint import pprint
 
 
 class Framework:
-
     """Класс Framework - основа фреймворка"""
 
     def __init__(self, routes_obj, fronts_obj):
@@ -13,17 +12,17 @@ class Framework:
     def __call__(self, environ, start_response):
         # получаем адрес, по которому выполнен переход
         path = environ['PATH_INFO']
-
+        print("environ['PATH_INFO'] = ", environ['PATH_INFO'])
+        pprint(environ)
         # добавление закрывающего слеша
         if not path.endswith('/'):
             path = f'{path}/'
 
-        # находим нужный контроллер
-        # отработка паттерна page controller
+        # находим нужный view контроллер
         if path in self.routes_lst:
             view = self.routes_lst[path]
         else:
-            view = NotFound404()
+            view = self.routes_lst['NotFound']
 
         request = {}
         # наполняем словарь request элементами

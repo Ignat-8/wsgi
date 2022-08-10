@@ -1,5 +1,6 @@
+import os
 from datetime import date
-from views import Index, About
+from views import Index, About, NotFound404
 
 
 # front controller
@@ -8,7 +9,7 @@ def secret_front(request):
 
 
 def other_front(request):
-    request['key'] = 'key'
+    request['path'] = os.getcwd()
 
 
 fronts = [secret_front, other_front]
@@ -16,4 +17,5 @@ fronts = [secret_front, other_front]
 routes = {
     '/': Index(),
     '/about/': About(),
+    'NotFound': NotFound404(),
 }
