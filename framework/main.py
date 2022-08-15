@@ -1,5 +1,5 @@
-import quopri
-from pprint import pprint
+# import quopri
+# from pprint import pprint
 
 
 class Framework:
@@ -12,8 +12,20 @@ class Framework:
     def __call__(self, environ, start_response):
         # получаем адрес, по которому выполнен переход
         path = environ['PATH_INFO']
-        print("environ['PATH_INFO'] = ", environ['PATH_INFO'])
-        pprint(environ)
+        print("environ['PATH_INFO'] =", path)
+
+        query_string = environ['QUERY_STRING']
+        print(f"query_string ='{query_string}'")  # -> 'id=1&category=10'
+
+        request_params = self.parse_input_data(query_string)
+        print("request_params =", request_params)  # -> {'id': '1', 'category': '10'}
+
+        if request_params:
+            path = f'/curs_id/'
+            request = request_params
+        else:
+            request = {}
+
         # добавление закрывающего слеша
         if not path.endswith('/'):
             path = f'{path}/'
@@ -24,7 +36,6 @@ class Framework:
         else:
             view = self.routes_lst['NotFound']
 
-        request = {}
         # наполняем словарь request элементами
         # этот словарь получат все контроллеры
         # отработка паттерна front controller
@@ -35,6 +46,17 @@ class Framework:
         code, body = view(request)
         start_response(code, [('Content-Type', 'text/html')])
         return [body.encode('utf-8')]
+
+    def parse_input_data(self, data):
+        result = {}
+
+        if data:
+            params = data.split('&')
+            for item in params:
+                k, v = item.split('=')
+                result[k] = v
+
+        return result
 
     # @staticmethod
     # def decode_value(data):

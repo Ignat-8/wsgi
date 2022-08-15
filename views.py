@@ -8,6 +8,13 @@ class Index:
                                 path=request.get('path', None))
 
 
+class Curs:
+    def __call__(self, request):
+        return '200 OK', render(f"curs_{request['curs_id']}.html", 
+                                curs_id=request['curs_id'],
+                                data=request.get('data', None))
+
+
 class About:
     def __call__(self, request):
         return '200 OK', render('about.html')
