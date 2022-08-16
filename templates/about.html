@@ -84,7 +84,7 @@
 		}
 
 		input[type="text"] {
-			width: 120px;
+			width: 150px;
 			border: 1px solid #d6d6d6;
 			padding: 2px;
 			outline: none;
@@ -122,6 +122,11 @@
 			width: 310px;
 			text-align: right;
 		}
+
+		textarea {
+			width: 200px;
+			height: 200px;
+		}
 	</style>
 </head>
 
@@ -135,6 +140,22 @@
 	<p>Все программы действуют в течение года.</p>
 	<p>Здесь будет описание наших контактов.</p>
 
+	<form action="" method="post">
+		<fieldset>
+			<legend>Форма обратной связи</legend>
+			<p><label class="title" for="title">Тема сообщения:</label>
+				<input type="text" name="title" id="title"><br />
+
+				<label class="title" for="message">Текст сообщения:</label>
+				<textarea placeholder="Введите ваше сообщение" id="message"></textarea>
+
+				<label class="title" for="email">Ваш email:</label>
+				<input type="text" name="email" id="email">
+			</p>
+
+		</fieldset>
+		<div class="submit"><input type="submit" value="Отправить" /></div>
+	</form>
 
 </body>
 
