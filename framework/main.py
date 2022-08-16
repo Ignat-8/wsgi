@@ -1,5 +1,8 @@
 import quopri
-from requests import GetRequests, PostRequests
+from datetime import datetime
+import csv
+from framework.requests import GetRequests, PostRequests
+
 
 
 class Framework:
@@ -14,15 +17,11 @@ class Framework:
         path = environ['PATH_INFO']
         print("environ['PATH_INFO'] =", path)
 
-        if request_params:
-            path = f'/curs_id/'
-            request = request_params
-        else:
-            request = {}
-
         # добавление закрывающего слеша
         if not path.endswith('/'):
             path = f'{path}/'
+
+        request = {}
 
         # Получаем данные запроса
         method = environ['REQUEST_METHOD']
@@ -30,13 +29,21 @@ class Framework:
 
         if method == 'POST':
             data = PostRequests().get_request_params(environ)
+            data = Framework.decode_value(data)
             request['data'] = data
-            print(f'Нам пришёл post-запрос: {Framework.decode_value(data)}')
+            print(f'Нам пришёл post-запрос: {data}')
+
+            data['time'] = datetime.now().strftime('%Y%m%d %H:%M:%S')
+            with open(f"post_data.txt", 'a', encoding='utf-8') as file:
+                file.write(str(data)+'\n')
 
         if method == 'GET':
             request_params = GetRequests().get_request_params(environ)
             request['request_params'] = request_params
             print(f'Нам пришли GET-параметры: {request_params}')
+            if request_params:
+                path = f"/curs_id/"
+                request['curs_id'] = request_params['curs_id']
 
         print(request)  # {'method': 'GET', 'request_params': {'id': '1', 'category': '10'}}
 

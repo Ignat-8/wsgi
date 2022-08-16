@@ -90,6 +90,10 @@
 			outline: none;
 		}
 
+		input.message{
+			height: 200px;
+		}
+
 		input[type="text"]:focus,
 		input[type="text"]:hover {
 			background-color: #d0e2f0;
@@ -147,7 +151,7 @@
 				<input type="text" name="title" id="title"><br />
 
 				<label class="title" for="message">Текст сообщения:</label>
-				<textarea placeholder="Введите ваше сообщение" id="message"></textarea>
+				<input type="text" name="message" class="message"><br />
 
 				<label class="title" for="email">Ваш email:</label>
 				<input type="text" name="email" id="email">
