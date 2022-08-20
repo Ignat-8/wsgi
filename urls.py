@@ -1,6 +1,6 @@
 import os
 from datetime import date
-from views import Index, About, NotFound404
+from views import Index, About, Curs, NotFound404
 
 
 # front controller
@@ -17,5 +17,6 @@ fronts = [secret_front, other_front]
 routes = {
     '/': Index(),
     '/about/': About(),
+    '/curs_id/': Curs(),
     'NotFound': NotFound404(),
 }
