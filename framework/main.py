@@ -1,6 +1,5 @@
 import quopri
 from datetime import datetime
-import csv
 from framework.requests import GetRequests, PostRequests
 
 
