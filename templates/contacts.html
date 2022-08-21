@@ -3,6 +3,7 @@
 
 <head>
 	<title>Школа программирования</title>
+	<link rel="stylesheet" href="styles.css">
 	<style type="text/css">
 		html {
 			height: 100%;
@@ -381,6 +382,55 @@
 			color: #47433F;
 			border-top: 1px solid #FFF;
 		}
+
+		input[type="text"] {
+			width: 150px;
+			border: 1px solid #d6d6d6;
+			padding: 2px;
+			outline: none;
+		}
+
+		input.message {
+			height: 200px;
+		}
+
+		input[type="text"]:focus,
+		input[type="text"]:hover {
+			background-color: #d0e2f0;
+			border: 1px solid #999999;
+		}
+
+		input[type="submit"] {
+			border: 1px solid #006633;
+			background-color: #009966;
+			color: #ffffff;
+			border-radius: 5px;
+			padding: 5px;
+			margin-top: 10px;
+		}
+
+		input[type="submit"]:hover {
+			border: 1px solid #006633;
+			background-color: #00CC33;
+			color: #ffffff;
+			cursor: pointer;
+		}
+
+		.title {
+			float: left;
+			width: 160px;
+			clear: left;
+		}
+
+		.submit {
+			width: 310px;
+			text-align: right;
+		}
+
+		textarea {
+			width: 200px;
+			height: 200px;
+		}
 	</style>
 </head>
 
@@ -395,14 +445,24 @@
 			</div>
 			<div id="menubar">
 				<ul id="menu">
-					<li class="selected"><a href="/">Главная</a></li>
-					<li><a href="/curses">Наши курсы</a></li>
-					<li><a href="/contacts">Контакты</a></li>
+					<li><a href="/">Главная</a></li>
+					<li><a href="/curses/">Наши курсы</a></li>
+					<li class="selected"><a href="/contacts/">Контакты</a></li>
 				</ul>
 			</div>
 		</div>
 		<div id="site_content">
 			<div class="sidebar">
+				<h3>Latest News</h3>
+				<h4>New Website Launched</h4>
+				<h5>August 1st, 2013</h5>
+				<p>2013 sees the redesign of our website. Take a look around and let us know what you think.<br /><a
+						href="#">Read more</a></p>
+				<p></p>
+				<h4>New Website Launched</h4>
+				<h5>August 1st, 2013</h5>
+				<p>2013 sees the redesign of our website. Take a look around and let us know what you think.<br /><a
+						href="#">Read more</a></p>
 				<h3>Полезные ссылки</h3>
 				<ul>
 					<li><a href="/?curs_id=1">Курс 1</a></li>
@@ -420,7 +480,26 @@
 				</form>
 			</div>
 			<div id="content">
-				<p>Упс... такой страницы не существует</p>
+				<h1>О нас</h1>
+				<p>Здесь будет описание наших контактов.</p>
+
+				<form action="" method="post">
+					<fieldset>
+						<legend>Форма обратной связи</legend>
+						<p><label class="title" for="title">Тема сообщения:</label>
+							<input type="text" name="title" id="title"><br />
+
+							<label class="title" for="message">Текст сообщения:</label>
+							<input type="text" name="message" class="message"><br />
+
+							<label class="title" for="email">Ваш email:</label>
+							<input type="text" name="email" id="email">
+						</p>
+
+					</fieldset>
+					<div class="submit"><input type="submit" value="Отправить" /></div>
+				</form>
+
 			</div>
 		</div>
 		<div id="footer">
@@ -429,7 +508,6 @@
 				href="http://www.html5webtemplates.co.uk">Free CSS Templates</a>
 		</div>
 	</div>
-
 </body>
 
 </html>

@@ -15,9 +15,15 @@ class Curs:
                                 data=request.get('data', None))
 
 
+class Curses:
+    def __call__(self, request):
+        return '200 OK', render("curses.html",
+                                data=request.get('data', None))
+
+
 class About:
     def __call__(self, request):
-        return '200 OK', render('about.html')
+        return '200 OK', render('contacts.html')
 
 
 class NotFound404:
