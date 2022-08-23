@@ -1,0 +1,42 @@
+﻿{% extends "base.html" %}
+{% block title %}
+Обучение программированию
+{% endblock %}
+{% block style %}
+{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc_menu.html" %}
+{% endblock %}
+{% block sidebar %}
+{% include "inc_sidebar.html" %}
+{% endblock %}
+
+{% block body %}
+<div id="content">
+	<h1>О нас</h1>
+	<p>Здесь будет описание наших контактов.</p>
+
+	<form action="" method="post">
+		<fieldset>
+			<legend>Форма обратной связи</legend>
+			<p><label class="title" for="title">Тема сообщения:</label>
+				<input type="text" name="title" id="title"><br />
+
+				<label class="title" for="message">Текст сообщения:</label>
+				<input type="text" name="message" class="message"><br />
+
+				<label class="title" for="email">Ваш email:</label>
+				<input type="text" name="email" id="email">
+			</p>
+
+		</fieldset>
+		<div class="submit"><input type="submit" value="Отправить" /></div>
+	</form>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "inc_footer.html" %}
+{% endblock %}
