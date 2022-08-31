@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+Обучение программированию
+{% endblock %}
+{% block style %}
+{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc_menu.html" %}
+{% endblock %}
+{% block sidebar %}
+{% include "inc_sidebar.html" %}
+{% endblock %}
+
+{% block body %}
+<div id="content">
+    <div>
+        <a href="/courses-list/?id={{id}}">назад</a>
+    </div>
+
+    <br>
+    <br>
+    {{objects_list}}
+    <div>
+        <h1>Создание курса для категории "{{name}}"</h1>
+        <form method="post">
+            <input type="text" name="name" value="{{objects_list.name}}" placeholder="название">
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "inc_footer.html" %}
+{% endblock %}
