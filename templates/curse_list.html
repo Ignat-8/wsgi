@@ -15,14 +15,19 @@
 {% block body %}
 <div id="content">
     <div>
-        <a href="/create-category/">Создать новую категорию</a>
+        <a href="/admins/">к списку категорий</a>
     </div>
+
+    <br>
+    <br>
+
     <div>
-        <h1>Список существующих категорий</h1>
+        <a href="/create-course/?id={{id}}">Создать новый курс</a>
+        <br>
+        <h1>Список курсов для категории "{{name}}"</h1>
         {% for item in objects_list %}
         <li>
-            {{item.name}} <span>- количество курсов: {{item.course_count()}}</span>
-            <a href="/courses-list/?id={{item.id}}">Показать курсы</a>
+            {{item.name}} <span><a href="/copy-course/?name={{item.name}}">скопировать</a></span>
         </li>
         {% endfor %}
     </div>

@@ -1,7 +1,7 @@
 import quopri
 from datetime import datetime
 from framework.requests import GetRequests, PostRequests
-
+from views import logger
 
 
 class Framework:
@@ -14,7 +14,7 @@ class Framework:
     def __call__(self, environ, start_response):
         # получаем адрес, по которому выполнен переход
         path = environ['PATH_INFO']
-        print("environ['PATH_INFO'] =", path)
+        logger.add(f"environ['PATH_INFO'] = {path}")
 
         # добавление закрывающего слеша
         if not path.endswith('/'):
@@ -30,7 +30,7 @@ class Framework:
             data = PostRequests().get_request_params(environ)
             data = Framework.decode_value(data)
             request['data'] = data
-            print(f'Нам пришёл post-запрос: {data}')
+            logger.add(f'Нам пришёл post-запрос: {data}')
 
             data['time'] = datetime.now().strftime('%Y%m%d %H:%M:%S')
             with open(f"post_data.txt", 'a', encoding='utf-8') as file:
@@ -39,12 +39,12 @@ class Framework:
         if method == 'GET':
             request_params = GetRequests().get_request_params(environ)
             request['request_params'] = request_params
-            print(f'Нам пришли GET-параметры: {request_params}')
-            if request_params:
-                path = f"/curs_id/"
-                request['curs_id'] = request_params['curs_id']
+            logger.add(f'Нам пришли GET-параметры: {request_params}')
+            # if request_params:
+                # path = f"/curs_id/"
+                # request['curs_id'] = request_params['curs_id']
 
-        print(request)  # {'method': 'GET', 'request_params': {'id': '1', 'category': '10'}}
+        logger.add(request)  # {'method': 'GET', 'request_params': {'id': '1', 'category': '10'}}
 
         # находим нужный view контроллер
         if path in self.routes_lst:

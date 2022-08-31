@@ -30,7 +30,7 @@ class Logger(metaclass=SingletonByName):
     def __init__(self, name):
         self.name = name
 
-    def log(self, text):
+    def add(self, text):
         print(f'log {self.name} --->', text)
         with open(f'{now}_{self.name}.txt', 'a', encoding='utf-8') as logfile:
             logfile.write(f'{datetime.now().strftime("%Y%m%d %H:%M:%S")}: {text}\n')
@@ -41,5 +41,5 @@ if __name__== '__main__':
     logger1 = Logger('log1')
     logger2 = Logger('log2')
 
-    logger1.log('some text1')
-    logger2.log('some text2')
+    logger1.add('some text1')
+    logger2.add('some text2')
