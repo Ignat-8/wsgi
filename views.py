@@ -26,6 +26,11 @@ class About:
         return '200 OK', render('contacts.html')
 
 
+class Admins:
+    def __call__(self, request):
+        return '200 OK', render('admins.html')
+
+
 class NotFound404:
     def __call__(self, request):
         return '404 WHAT', render('page_404.html')

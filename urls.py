@@ -1,6 +1,6 @@
 import os
 from datetime import date
-from views import Index, About, Curs, Curses, NotFound404
+from views import Index, About, Curs, Curses, NotFound404, Admins
 
 
 # front controller
@@ -19,5 +19,6 @@ routes = {
     '/contacts/': About(),
     '/curses/': Curses(),
     '/curs_id/': Curs(),
+    '/admins/': Admins(),
     'NotFound': NotFound404(),
 }
