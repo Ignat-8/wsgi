@@ -97,9 +97,9 @@ class CreateCourse:
             category = None
             if self.category_id != -1:
                 category = site.find_category_by_id(int(self.category_id))
-
                 course = site.create_course('record', name, category)
                 site.courses.append(course)
+
             logger.add(f'---------------------------------------------------------------------')
             return '200 OK', render('curse_list.html',
                                     objects_list=category.courses,
@@ -148,8 +148,8 @@ class CopyCourse:
         else:
             request_params = request['request_params']
             name = request_params['name']
+            name = site.decode_value(name)
             old_course = site.get_course(name)
-
             new_name = f'copy_{name}'
             new_course = old_course.clone()
             new_course.name = new_name
