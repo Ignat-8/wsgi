@@ -1,6 +1,7 @@
 from framework.templator import render
 from patterns.logger import Logger
-from patterns.patterns import Engine
+from patterns.patterns_сreational import Engine, Logger
+from patterns.patterns_structural import AppRoute, Debug
 
 
 site = Engine()
