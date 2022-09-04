@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}
 Обучение программированию
 {% endblock %}
@@ -15,16 +15,15 @@
 {% block body %}
 <div id="content">
     <div>
-        <a href="/courses-list/?id={{id}}">назад</a>
+        <a href="/courses-list/?id={{category.id}}">назад</a>
     </div>
 
     <br>
     <br>
-    {{objects_list}}
     <div>
-        <h1>Создание курса для категории "{{name}}"</h1>
+        <h1>Создание курса для категории "{{category.name}}"</h1>
         <form method="post">
-            <input type="text" name="name" value="{{objects_list.name}}" placeholder="название">
+            <input type="text" name="name" placeholder="название">
             <button type="submit">Сохранить</button>
         </form>
     </div>

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}
 Обучение программированию
 {% endblock %}
@@ -22,14 +22,52 @@
     <br>
 
     <div>
-        <a href="/create-course/?id={{id}}">Создать новый курс</a>
+        <a href="/create-course/?id={{category.id}}">Создать новый курс</a>
         <br>
-        <h1>Список курсов для категории "{{name}}"</h1>
-        {% for item in objects_list %}
-        <li>
-            {{item.name}} <span><a href="/copy-course/?name={{item.name}}">скопировать</a></span>
-        </li>
-        {% endfor %}
+        <h1>Список курсов для категории "{{category.name}}"</h1>
+
+        <table>
+            <tr>
+                <td>Категория</td>
+                <td>Подкатегория</td>
+                <td>Название курса</td>
+                <td>Количество курсов</td>
+            </tr>
+
+            {% if category.subcategory %}
+            {% for sub_item in category.subcategory %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>
+                    {{sub_item.name}},<br>
+                    <a href="/create-category/?name={{category.name}}&id={{category.id}}">создать</a>
+                </td>
+                <td>-</td>
+                <td>{{ sub_item.course_count() }}</td>
+                <td><a href="/courses-list/?id={{sub_item.id}}">показать курсы</a></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>
+                    <a href="/create-category/?name={{category.name}}&id={{category.id}}">создать</a>
+                </td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            {% endif %}
+
+            {% for item in category.courses %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>-</td>
+                <td>{{item.name}}</td>
+                <td>1 </td>
+                <td><a href="/copy-course/?name={{item.name}}">скопировать</a></td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}

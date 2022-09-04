@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}
 Обучение программированию
 {% endblock %}
@@ -13,10 +13,18 @@
 {% endblock %}
 
 {% block body %}
+
 <div id="content">
     <h1>Создание категории</h1>
     <form method="post">
-        <input type="text" name="name" placeholder="Название">
+        {% if top_category_name %}
+        Основная категория {{ top_category_name }}<br>
+        <input type="hidden" name="top_category_name" value="{{ top_category_name }}"><br>
+        <input type="hidden" name="top_category_id" value="{{ top_category_id }}"><br>
+        <input type="text" name="name" placeholder="Название подкатегории">
+        {% else %}
+        <input type="text" name="name" placeholder="Название категории">
+        {% endif %}
         <button type="submit">Сохранить</button>
     </form>
 </div>
