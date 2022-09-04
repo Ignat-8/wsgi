@@ -12,11 +12,13 @@ class Category:
         Category.auto_id += 1
         self.name = name
         self.courses = []
+        self.subcategory = []
 
     def course_count(self):
         result = len(self.courses)
-        # if self.name:
-        #     result += self.name.course_count()
+        for obj in self.subcategory:
+            result += len(obj.courses)
+
         return result
 
 
@@ -106,7 +108,6 @@ class Engine:
     def find_category_by_id(self, id):
         for item in self.categories:
             if int(item.id) == int(id):
-                print('item.id =', item.id, ', id =', id, ', item.name=', item.name)
                 return item
         raise Exception(f'Нет категории с id = {id}')
 

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}
 Обучение программированию
 {% endblock %}
@@ -19,12 +19,28 @@
     </div>
     <div>
         <h1>Список существующих категорий</h1>
-        {% for item in objects_list %}
-        <li>
-            {{item.name}} <span>- количество курсов: {{item.course_count()}}</span>
-            <a href="/courses-list/?id={{item.id}}">Показать курсы</a>
-        </li>
-        {% endfor %}
+        <table>
+            <tr>
+                <td>Категория</td>
+                <td>Подкатегория</td>
+                <td>Кол-во курсов</td>
+            </tr>
+            {% for item in objects_list %}
+            <tr>
+                <td>{{item.name}}</td>
+                <td>
+                    {% if item.subcategory %}
+                    {% for sub_item in item.subcategory %}
+                    {{ sub_item.name }},<br>
+                    {% endfor %}
+                    {% endif %}
+                    <a href="/create-category/?name={{item.name}}&id={{item.id}}">создать</a>
+                </td>
+                <td>{{ item.course_count() }}</td>
+                <td><a href="/courses-list/?id={{item.id}}">показать курсы</a></td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}

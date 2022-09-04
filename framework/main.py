@@ -40,9 +40,6 @@ class Framework:
             request_params = GetRequests().get_request_params(environ)
             request['request_params'] = request_params
             logger.add(f'Нам пришли GET-параметры: {request_params}')
-            # if request_params:
-                # path = f"/curs_id/"
-                # request['curs_id'] = request_params['curs_id']
 
         logger.add(request)  # {'method': 'GET', 'request_params': {'id': '1', 'category': '10'}}
 
@@ -82,3 +79,36 @@ class Framework:
             val_decode_str = quopri.decodestring(val).decode('UTF-8')
             new_data[k] = val_decode_str
         return new_data
+
+
+class DebugApplication(Framework):
+    """
+        Новый вид WSGI-application — логирующий,
+        такой же, как основной, только для каждого
+        запроса выводит информацию тип запроса и
+        параметры в консоль.
+    """
+    def __init__(self, routes_obj, fronts_obj):
+        self.application = Framework(routes_obj, fronts_obj)
+        super().__init__(routes_obj, fronts_obj)
+
+    def __call__(self, env, start_response):
+        print('DEBUG MODE')
+        print(env)
+        return self.application(env, start_response)
+
+
+
+class FakeApplication(Framework):
+    """
+        Новый вид WSGI-application — фейковый,
+        на все запросы пользователя отвечает:
+        200 OK, Hello from Fake
+    """
+    def __init__(self, routes_obj, fronts_obj):
+        self.application = Framework(routes_obj, fronts_obj)
+        super().__init__(routes_obj, fronts_obj)
+
+    def __call__(self, env, start_response):
+        start_response('200 OK', [('Content-Type', 'text/html')])
+        return [b'Hello from Fake']
