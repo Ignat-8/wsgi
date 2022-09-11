@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}
+Обучение программированию
+{% endblock %}
+{% block style %}
+{% include "inc_style.html" %}
+{% endblock %}
+{% block menu %}
+{% include "inc_menu.html" %}
+{% endblock %}
+{% block sidebar %}
+{% include "inc_sidebar.html" %}
+{% endblock %}
+
+{% block body %}
+<div id="content">
+    <div>
+        <a href="/admins/">назад</a><br>
+        <a href="/create-student/">Создать студента</a><br>
+        <a href="/student-add/">Добавить студента на курс</a>
+    </div>
+    <br>
+    <br>
+    <div>
+        <h1>Список студентов</h1>
+        <table>
+            <tr>
+                <td>Имя студента</td>
+                <td>Курсы</td>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>
+                    {% if student.courses %}
+                    {% for curs in student.courses %}
+                    {{ curs.name }},<br>
+                    {% endfor %}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "inc_footer.html" %}
+{% endblock %}

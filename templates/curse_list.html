@@ -15,14 +15,13 @@
 {% block body %}
 <div id="content">
     <div>
-        <a href="/admins/">к списку категорий</a>
-    </div>
-
-    <br>
-    <br>
-
-    <div>
+        <a href="/admins/">назад</a><br>
+        <a href="/student-add/">Добавить студента на курс</a><br>
         <a href="/create-course/?id={{category.id}}">Создать новый курс</a>
+    </div>
+    <br>
+    <div>
+
         <br>
         <h1>Список курсов для категории "{{category.name}}"</h1>
 

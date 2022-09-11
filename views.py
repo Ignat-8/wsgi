@@ -1,11 +1,16 @@
 from framework.templator import render
 from patterns.logger import Logger
-from patterns.patterns_creational import Engine
+from patterns.patterns_creational import Engine, Student
 from patterns.patterns_structual import AppRoute, Debug
+from patterns.patterns_behavioral import EmailNotifier, SmsNotifier, \
+                                         TemplateView, ListView, \
+                                         CreateView, BaseSerializer
 
 
 site = Engine()
 logger = Logger('main_log')
+email_notifier = EmailNotifier()
+sms_notifier = SmsNotifier()
 
 routes = {}
 
@@ -61,7 +66,7 @@ class Admins:
         return '200 OK', render('admins.html', objects_list=site.categories)
 
 
-@AppRoute(routes=routes, url='/NotFound/')
+@AppRoute(routes=routes, url='/notfound/')
 class NotFound404:
     """Контроллер страницы 404"""
     @Debug('NotFound')
@@ -70,14 +75,68 @@ class NotFound404:
         return '404 WHAT', render('page_404.html')
 
 
+@AppRoute(routes=routes, url='/create-student/')
+class CreateStudent:
+    """Контроллер создания студента"""
+    def __call__(self, request):
+        logger.add(f'CreateStudent:\n{request}')
+
+        if request['method'] == 'POST':
+            data = request['data']
+            name = data['name']
+            name = site.decode_value(name)
+
+            if site.students:
+                for obj in site.students:
+                    if name == obj.name:
+                        return '409 Conflict', render('student_create.html', student=obj, is_conflict=1)
+            
+            new_student = Student(name)
+            site.students.append(new_student)
+            return '200 OK', render('student_list.html', students=site.students, is_conflict=0)
+        else:
+            return '200 OK', render('student_create.html', students=site.students, is_conflict=0)
+
+
+@AppRoute(routes=routes, url='/student-list/')
+class StudentList:
+    """контроллер формирования списка студентов"""
+    def __call__(self, request):
+        logger.add(f'StudentList:\n{request}')
+        return '200 OK', render('student_list.html', students=site.students)
+
+
+@AppRoute(routes=routes, url='/student-add/')
+class AddStudentCurs:
+    """контроллер формирования списка студентов"""
+    def __call__(self, request):
+        logger.add(f'AddStudentCurs:\n{request}')
+        if request['method'] == 'POST':
+            data = request['data']
+            
+            course_name = data['course_name']
+            course_name = site.decode_value(course_name)
+            course = site.get_course(course_name)
+
+            student_name = data['student_name']
+            student_name = site.decode_value(student_name)
+            student = site.get_student(student_name)
+            
+            course.add_student(student)
+            return '200 OK', render('student_list.html', students=site.students, courses=site.courses)
+        else:
+            return '200 OK', render('student_add.html', students=site.students, courses=site.courses)
+
+
 @AppRoute(routes=routes, url='/create-category/')
 class CreateCategory:
     """Контроллер создания категории"""
     @Debug('create-category')
     def __call__(self, request):
+        logger.add(f'create-category:\n{request}')
 
         if request['method'] == 'POST':
-            logger.add(f'create-category:\n{request}')
+
             data = request['data']
             name = data['name']
             name = site.decode_value(name)
@@ -95,7 +154,6 @@ class CreateCategory:
             # возвращаемся к списку категорий
             return '200 OK', render('admins.html', objects_list=site.categories)
         else:
-            logger.add(f'create-category:\n{request}')
             if request['request_params']:
                 # при создании подкатегории передается id родительской категории
                 top_category_id = request['request_params']['id']
@@ -144,6 +202,9 @@ class CreateCourse:
             if self.category_id != -1:
                 category = site.find_category_by_id(int(self.category_id))
                 course = site.create_course('record', name, category)
+                # Добавляем наблюдателей на курс
+                course.observers.append(email_notifier)
+                course.observers.append(sms_notifier)
                 site.courses.append(course)
 
             return '200 OK', render('curse_list.html',
@@ -183,8 +244,7 @@ class CopyCourse:
                 course = site.create_course('record', name, category)
                 site.courses.append(course)
             
-            return '200 OK', render('curse_list.html',
-                                    category=category)
+            return '200 OK', render('curse_list.html', category=category)
         else:
             request_params = request['request_params']
             name = request_params['name']
@@ -192,6 +252,7 @@ class CopyCourse:
             old_course = site.get_course(name)
             new_name = f'copy_{name}'
             new_course = old_course.clone()
+            
             new_course.name = new_name
             site.courses.append(new_course)
             self.category_id = int(new_course.category.id)
@@ -199,3 +260,11 @@ class CopyCourse:
 
             logger.add(f'Успешное копирование курса, {new_course}')
             return '200 OK', render('curse_create.html', category=category)
+
+
+@AppRoute(routes=routes, url='/api/')
+class CourseApi:
+    """Возвращает json"""
+    @Debug(name='CourseApi')
+    def __call__(self, request):
+        return '200 OK', BaseSerializer(site.courses).save()
