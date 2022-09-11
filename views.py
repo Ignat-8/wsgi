@@ -75,35 +75,59 @@ class NotFound404:
         return '404 WHAT', render('page_404.html')
 
 
-@AppRoute(routes=routes, url='/create-student/')
-class CreateStudent:
-    """Контроллер создания студента"""
-    def __call__(self, request):
-        logger.add(f'CreateStudent:\n{request}')
+# @AppRoute(routes=routes, url='/create-student/')
+# class CreateStudent:
+#     """Контроллер создания студента"""
+#     def __call__(self, request):
+#         logger.add(f'CreateStudent:\n{request}')
 
-        if request['method'] == 'POST':
-            data = request['data']
-            name = data['name']
-            name = site.decode_value(name)
+#         if request['method'] == 'POST':
+#             data = request['data']
+#             name = data['name']
+#             name = site.decode_value(name)
 
-            if site.students:
-                for obj in site.students:
-                    if name == obj.name:
-                        return '409 Conflict', render('student_create.html', student=obj, is_conflict=1)
+#             if site.students:
+#                 for obj in site.students:
+#                     if name == obj.name:
+#                         return '409 Conflict', render('student_create.html', student=obj, is_conflict=1)
             
-            new_student = Student(name)
-            site.students.append(new_student)
-            return '200 OK', render('student_list.html', students=site.students, is_conflict=0)
-        else:
-            return '200 OK', render('student_create.html', students=site.students, is_conflict=0)
+#             new_student = Student(name)
+#             site.students.append(new_student)
+#             return '200 OK', render('student_list.html', objects_list=site.students, is_conflict=0)
+#         else:
+#             return '200 OK', render('student_create.html', students=site.students, is_conflict=0)
 
+
+@AppRoute(routes=routes, url='/create-student/')
+class CreateStudentView(CreateView):
+    template_name = 'student_create.html'
+
+    def duble_obj_name(self, name):
+        if site.students:
+            for obj in site.students:
+                if name == obj.name:
+                    return True
+        return False
+     
+    def create_obj(self, data: dict):
+        name = data['name']
+        name = site.decode_value(name)
+        new_obj = site.create_user('student', name)
+        site.students.append(new_obj)
+
+
+# @AppRoute(routes=routes, url='/student-list/')
+# class StudentList:
+#     """контроллер формирования списка студентов"""
+#     def __call__(self, request):
+#         logger.add(f'StudentList:\n{request}')
+#         return '200 OK', render('student_list.html', students=site.students)
 
 @AppRoute(routes=routes, url='/student-list/')
-class StudentList:
+class StudentListView(ListView):
     """контроллер формирования списка студентов"""
-    def __call__(self, request):
-        logger.add(f'StudentList:\n{request}')
-        return '200 OK', render('student_list.html', students=site.students)
+    queryset = site.students
+    template_name = 'student_list.html'
 
 
 @AppRoute(routes=routes, url='/student-add/')
@@ -123,7 +147,7 @@ class AddStudentCurs:
             student = site.get_student(student_name)
             
             course.add_student(student)
-            return '200 OK', render('student_list.html', students=site.students, courses=site.courses)
+            return '200 OK', render('student_list.html', objects_list=site.students, courses=site.courses)
         else:
             return '200 OK', render('student_add.html', students=site.students, courses=site.courses)
 

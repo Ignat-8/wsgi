@@ -24,7 +24,7 @@
     <div>
         <h1>Создание студента</h1>
         {% if is_conflict == 1 %}
-        <b>Студент {{ student.name }} уже существует, введите другое имя</b>
+        <b>Студент {{ name }} уже существует, введите другое имя</b>
         {% endif %}
         <form method="post">
             <input type="text" name="name" placeholder="Имя">

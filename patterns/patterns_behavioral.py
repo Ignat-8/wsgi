@@ -1,4 +1,5 @@
 import jsonpickle
+import quopri
 from framework.templator import render
 
 
@@ -53,13 +54,21 @@ class TemplateView:
     def get_template(self):
         return self.template_name
 
-    def render_template_with_context(self):
+    def render_template_with_context(self, name, is_conflict=0):
         template_name = self.get_template()
         context = self.get_context_data()
-        return '200 OK', render(template_name, **context)
+        context['is_conflict'] = is_conflict
+        context['name'] = name
+        print('TemplateView context:\n', context)
+
+        if not is_conflict:    
+            return '200 OK', render(template_name, **context)
+        else:
+            return '409 Conflict', render(template_name, **context)
 
     def __call__(self, request):
-        return self.render_template_with_context()
+        name = ''
+        return self.render_template_with_context(name)
 
 
 class ListView(TemplateView):
@@ -90,14 +99,28 @@ class CreateView(TemplateView):
 
     def create_obj(self, data):
         pass
+    
+    def duble_obj_name(self, name):
+        pass
+
+    def decode_value(self, val):
+        val_b = bytes(val.replace('%', '=').replace("+", " "), 'UTF-8')
+        val_decode_str = quopri.decodestring(val_b)
+        return val_decode_str.decode('UTF-8')
 
     def __call__(self, request):
         if request['method'] == 'POST':
-            # метод пост
             data = self.get_request_data(request)
-            self.create_obj(data)
+            name = data['name']
+            name = self.decode_value(name)
 
-            return self.render_template_with_context()
+            if not self.duble_obj_name(name):
+                self.create_obj(data)
+                is_conflict = 0
+                return self.render_template_with_context(is_conflict)
+            else:
+                is_conflict = 1
+                return self.render_template_with_context(name, is_conflict)
         else:
             return super().__call__(request)
 
