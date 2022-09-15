@@ -44,10 +44,11 @@ class Framework:
         logger.add(request)  # {'method': 'GET', 'request_params': {'id': '1', 'category': '10'}}
 
         # находим нужный view контроллер
+        # logger.add(f'self.routes_lst : {self.routes_lst }')
         if path in self.routes_lst:
             view = self.routes_lst[path]
         else:
-            view = self.routes_lst['NotFound']
+            view = self.routes_lst['/notfound/']
 
         # наполняем словарь request элементами
         # этот словарь получат все контроллеры
