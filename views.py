@@ -1,16 +1,19 @@
 from framework.templator import render
 from patterns.logger import Logger
-from patterns.creational import Engine, Student
+from patterns.creational import Engine, Student, MapperRegistry
 from patterns.structual import AppRoute, Debug
 from patterns.behavioral import EmailNotifier, SmsNotifier, \
                                          TemplateView, ListView, \
                                          CreateView, BaseSerializer
+from patterns.unit_of_work import UnitOfWork
 
 
 site = Engine()
 logger = Logger('main_log')
 email_notifier = EmailNotifier()
 sms_notifier = SmsNotifier()
+UnitOfWork.new_current()
+UnitOfWork.get_current().set_mapper_registry(MapperRegistry)
 
 routes = {}
 
@@ -114,6 +117,8 @@ class CreateStudentView(CreateView):
         name = site.decode_value(name)
         new_obj = site.create_user('student', name)
         site.students.append(new_obj)
+        new_obj.mark_new()
+        UnitOfWork.get_current().commit()
 
 
 # @AppRoute(routes=routes, url='/student-list/')

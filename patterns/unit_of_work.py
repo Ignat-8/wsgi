@@ -1,10 +1,9 @@
 import threading
 
 
-# архитектурный системный паттерн - UnitOfWork
 class UnitOfWork:
     """
-    Паттерн UNIT OF WORK
+    архитектурный системный паттерн - UnitOfWork
     """
     # Работает с конкретным потоком
     current = threading.local()
@@ -18,15 +17,12 @@ class UnitOfWork:
         self.MapperRegistry = MapperRegistry
 
     def register_new(self, obj):
-        #self.new_objects.clear()
         self.new_objects.append(obj)
 
     def register_dirty(self, obj):
-        #self.dirty_objects.clear()
         self.dirty_objects.append(obj)
 
     def register_removed(self, obj):
-        #self.removed_objects.clear()
         self.removed_objects.append(obj)
 
     def commit(self):
@@ -39,9 +35,7 @@ class UnitOfWork:
         self.removed_objects.clear()
 
     def insert_new(self):
-        print(self.new_objects)
         for obj in self.new_objects:
-            print(f"Вывожу {self.MapperRegistry}")
             self.MapperRegistry.get_mapper(obj).insert(obj)
 
     def update_dirty(self):
@@ -75,4 +69,3 @@ class DomainObject:
 
     def mark_removed(self):
         UnitOfWork.get_current().register_removed(self)
-
