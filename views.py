@@ -1,8 +1,8 @@
 from framework.templator import render
 from patterns.logger import Logger
-from patterns.patterns_creational import Engine, Student
-from patterns.patterns_structual import AppRoute, Debug
-from patterns.patterns_behavioral import EmailNotifier, SmsNotifier, \
+from patterns.creational import Engine, Student
+from patterns.structual import AppRoute, Debug
+from patterns.behavioral import EmailNotifier, SmsNotifier, \
                                          TemplateView, ListView, \
                                          CreateView, BaseSerializer
 

@@ -1,6 +1,6 @@
 import copy
 import quopri
-from patterns.patterns_behavioral import ConsoleWriter, Subject
+from patterns.behavioral import ConsoleWriter, Subject
 
 
 # Создание пользователей ==========================================================
