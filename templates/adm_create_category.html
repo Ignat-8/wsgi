@@ -15,6 +15,8 @@
 {% block body %}
 
 <div id="content">
+    <a href="/admins/">назад</a><br>
+
     <h1>Создание категории</h1>
     <form method="post">
         {% if top_category_name %}
@@ -28,6 +30,7 @@
         <button type="submit">Сохранить</button>
     </form>
 </div>
+
 {% endblock %}
 
 {% block footer %}

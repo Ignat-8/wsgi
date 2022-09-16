@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}
 Обучение программированию
 {% endblock %}
@@ -15,13 +15,19 @@
 {% block body %}
 <div id="content">
     <div>
-        <a href="/courses-list/?id={{category.id}}">назад</a>
+        <a href="/admins/">назад</a><br>
+        <a href="/student-list/">Список студентов</a><br>
+        <a href="/student-add/">Добавить студента на курс</a>
     </div>
     <br>
+    <br>
     <div>
-        <h1>Создание курса для категории "{{category.name}}"</h1>
+        <h1>Создание студента</h1>
+        {% if is_conflict == 1 %}
+        <b>Студент {{ name }} уже существует, введите другое имя</b>
+        {% endif %}
         <form method="post">
-            <input type="text" name="name" placeholder="название">
+            <input type="text" name="name" placeholder="Имя">
             <button type="submit">Сохранить</button>
         </form>
     </div>
